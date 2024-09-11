@@ -31,7 +31,6 @@ def post_action_to_database(new_action):
 
     database = client['GithubActions']
     action_schema_collection = database['ActionSchema']
-   #  document_list = [{ "name" : "Abcd's Burgers" }]
     document_list = [new_action.to_document()]
 
     inserted_documents = action_schema_collection.insert_many(document_list)
