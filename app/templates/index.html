@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="15">
+    <title>Homepage with Auto Refresh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .document {
+            margin: 10px auto;
+            padding: 15px;
+            width: 60%;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Colorize the fields */
+        .author {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .branch {
+            color: #28a745;
+        }
+
+        .timestamp {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Latest Github Actions Performed</h1>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime(); // Update immediately on load
+    </script>
+
+    {% for document in documents %}
+        {% if document.action == 'PUSH' %}
+            <div class="document">
+                <p><span class="author">{{ document.author }}</span> pushed to <span class="branch">{{ document.to_branch }}</span> on <span class="timestamp">{{ document.timestamp }}</span></p>
+            </div>
+        {% elif document.action == 'PULL_REQUEST' %}
+            <div class="document">
+                <p><span class="author">{{ document.author }}</span> submitted a pull request from <span class="branch">{{ document.from_branch }}</span> to <span class="branch">{{ document.to_branch }}</span> on <span class="timestamp">{{ document.timestamp }}</span></p>
+            </div>
+        {% elif document.action == 'MERGE' %}
+            <div class="document">
+                <p><span class="author">{{ document.author }}</span> merged branch <span class="branch">{{ document.from_branch }}</span> to <span class="branch">{{ document.to_branch }}</span> on <span class="timestamp">{{ document.timestamp }}</span></p>
+            </div>
+        {% endif %}
+    {% endfor %}
+    
+</body>
+</html>
